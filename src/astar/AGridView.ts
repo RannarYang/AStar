@@ -3,7 +3,7 @@
  * @Description: 
  * @Date: 2018-09-15 19:53:35 
  * @Last Modified by: RannarYang
- * @Last Modified time: 2018-09-15 20:21:52
+ * @Last Modified time: 2018-09-16 00:33:48
  */
 
 class AGridView extends egret.Sprite {
@@ -48,13 +48,20 @@ class AGridView extends egret.Sprite {
         console.log("onGridClick: ", e)
         let xpos = Math.floor(e.localX / this._cellSize);
         let ypos = Math.floor(e.localY / this._cellSize);
-        this._gridData.setWalkable(xpos, ypos, !this._gridData.getNode(xpos, ypos).walkable)
+        if(xpos < 0 || xpos >= this._gridData.numCols || ypos < 0 || ypos >= this._gridData.numRows) {
+            return;
+        }
+        this._gridData.setWalkable(xpos, ypos, !this._gridData.getNode(xpos, ypos).walkable);
+        this._gridData.resetNode();
         this.drawGrid();
         this.findPath();
     }
     private findPath(): void {
-        var astar: AStar = new AStar();
+        // var astar: AStar = new AStar();
+        var astar: AStarOpt = new AStarOpt();
+        let stime = new Date();
         if(astar.findPath(this._gridData)) {
+            console.log((new Date()).getTime() - stime.getTime());
             this.showVisited(astar.getVisited());
             this.showPath(astar.path)
         }

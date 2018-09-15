@@ -1,4 +1,11 @@
-class AStar {
+/*
+ * @Description: A*算法优化
+ * @Author: RannarYang 
+ * @Date: 2018-09-16 00:12:33 
+ * @Last Modified by: RannarYang
+ * @Last Modified time: 2018-09-16 00:36:34
+ */
+class AStarOpt {
 	private _open: ANode[];
 	private _close: ANode[];
 	private _gridData: AGridData;
@@ -72,11 +79,13 @@ class AStar {
 						testNode.g = g;
 						testNode.h = h;
 						testNode.parent = node;
+						node.status = NodeStatus.OPEN;
 						open.push(testNode);
 					}
 				}
 			}
 			close.push(node);
+			node.status = NodeStatus.CLOSE;
 			if(open.length == 0) {
 				console.warn("i can not find path");
 				return false;
@@ -84,8 +93,8 @@ class AStar {
 			open.sort((node1: ANode, node2: ANode)=>{
 				return node2.f > node1.f ? 1 : -1;
 			});
-			
 			node = open.pop();
+			node.status = NodeStatus.NORMAL;
 		}
 		// 构建路径
 		this.buildPath();
@@ -101,22 +110,10 @@ class AStar {
 		}
 	}
 	private isOpen(node: ANode): boolean {
-		let open = this._open;
-		for(let i: number = 0, len = open.length; i < len; i++) {
-			if(open[i] == node) {
-				return true;
-			}
-		}
-		return false;
+		return node.status === NodeStatus.OPEN;
 	}
 	private isClose(node: ANode): boolean {
-		let close = this._close;
-		for(let i: number = 0, len = close.length; i < len; i++) {
-			if(close[i] == node) {
-				return true;
-			}
-		}
-		return false;
+		return node.status === NodeStatus.CLOSE;
 	}
 
 	public getVisited(): ANode[] {

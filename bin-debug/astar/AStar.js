@@ -4,7 +4,7 @@ var __reflect = (this && this.__reflect) || function (p, c, t) {
 var AStar = (function () {
     function AStar() {
         /**估价函数 */
-        this._heuristic = this.diagonal;
+        this._heuristic = this.manhatan;
         this._straightCost = 1;
         this._diagCost = Math.SQRT2;
     }

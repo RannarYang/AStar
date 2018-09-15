@@ -57,6 +57,13 @@ class AGridData {
         node.walkable = flag;
     }
     
+    public resetNode() {
+        for(let i = 0, len = this._nodes.length; i < len; i++) {
+            for(let j = 0, jlen = this._nodes[i].length; j < jlen; j++) {
+                this._nodes[i][j].reset();
+            }
+        }
+    }
     
     
 }
