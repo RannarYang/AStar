@@ -17828,7 +17828,7 @@ var eui;
          *
          */
         EditableText.prototype.$onRemoveFromStage = function () {
-            _super.prototype.$onRemoveFromStage.call(this);
+            eui.sys.UIComponentImpl.prototype["$onRemoveFromStage"].call(this);
             this.removeEventListener(egret.FocusEvent.FOCUS_IN, this.onfocusIn, this);
             this.removeEventListener(egret.FocusEvent.FOCUS_OUT, this.onfocusOut, this);
         };
@@ -21243,16 +21243,13 @@ var EXML;
      */
     function $parseURLContent(url, text) {
         var clazz = null;
-        if (text && typeof (text) == "string") {
+        if (text) {
             try {
                 clazz = parse(text);
             }
             catch (e) {
                 console.error(url + "\n" + e.message);
             }
-        }
-        if (text && text["prototype"]) {
-            clazz = text;
         }
         if (url) {
             if (clazz) {

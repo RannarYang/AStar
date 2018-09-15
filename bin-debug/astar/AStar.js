@@ -41,7 +41,8 @@ var AStar = (function () {
             for (var i = startCol; i <= endCol; i++) {
                 for (var j = startRow; j <= endRow; j++) {
                     testNode = gridData.getNode(i, j);
-                    if (testNode == node || !testNode.walkable || this.isOpen(testNode) || this.isClose(testNode)) {
+                    // if(testNode == node || !testNode.walkable || this.isOpen(testNode) || this.isClose(testNode)) {
+                    if (testNode == node || !testNode.walkable || this.isClose(testNode)) {
                         continue;
                     }
                     var cost = straightCost;
@@ -51,11 +52,21 @@ var AStar = (function () {
                     g = node.g + cost;
                     h = this.gouGu(testNode);
                     f = g + h;
-                    testNode.f = f;
-                    testNode.g = g;
-                    testNode.h = h;
-                    testNode.parent = node;
-                    open.push(testNode);
+                    if (this.isOpen(testNode)) {
+                        if (testNode.g > g) {
+                            testNode.f = f;
+                            testNode.g = g;
+                            testNode.h = h;
+                            testNode.parent = node;
+                        }
+                    }
+                    else {
+                        testNode.f = f;
+                        testNode.g = g;
+                        testNode.h = h;
+                        testNode.parent = node;
+                        open.push(testNode);
+                    }
                 }
             }
             close.push(node);
