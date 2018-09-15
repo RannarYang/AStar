@@ -101,7 +101,7 @@ class Main extends eui.UILayer {
         let gridData = new AGridData(50, 30);
 		gridData.setEndNode(0, 2);
 		gridData.setStartNode(48, 27);
-        let gridView = new AGridView(gridData)
+        let gridView = new AGridView(this.stage, gridData)
     	this.stage.addChild(gridView);
     }
 }

@@ -5,7 +5,7 @@ class AStar {
 	private _startNode: ANode;
 	private _endNode: ANode;
 	/**估价函数 */
-	private _heuristic: Function;
+	private _heuristic: Function = this.diagonal;
 	private _straightCost: number = 1;
 	private _diagCost: number = Math.SQRT2;
 	private _path: any[];
@@ -32,7 +32,7 @@ class AStar {
 		let close = this._close;
 
 		this._startNode.g = 0;
-		this._startNode.h = this.gouGu(this._startNode);
+		this._startNode.h = this._heuristic(this._startNode);
 		this._startNode.f = this._startNode.g + this._startNode.h;
 
 		let startCol: number, endCol: number, startRow: number, endRow: number;
@@ -57,7 +57,7 @@ class AStar {
 					}
 
 					g = node.g + cost;
-					h = this.gouGu(testNode);
+					h = this._heuristic(testNode);
 					f = g + h;
 
 					if(this.isOpen(testNode)) {
@@ -84,7 +84,6 @@ class AStar {
 			open.sort((node1: ANode, node2: ANode)=>{
 				return node2.f > node1.f ? 1 : -1;
 			});
-			console.log(open);
 			
 			node = open.pop();
 		}
@@ -124,9 +123,23 @@ class AStar {
 		return this._close.concat(this._open);
 	}
 
+
+	/**估价函数 */
+	/**估价函数--勾股定理 */
 	private gouGu(node: ANode): number {
 		let dcol: number = node.col - this._endNode.col;
 		let drow: number = node.row - this._endNode.row;
 		return Math.sqrt(dcol * dcol + drow * drow)
+	}
+	/**估价函数--曼哈顿 */
+	private manhatan(node: ANode): number {
+		return Math.abs(node.col - this._endNode.col) * this._straightCost + Math.abs(node.row - this._endNode.row) * this._straightCost;
+	}
+	/**估价函数--对角线启发式函数 */
+	private diagonal(node: ANode): number {
+		let dcol: number = Math.abs(node.col - this._endNode.col);
+		let drow: number = Math.abs(node.row - this._endNode.row);
+		let diag: number = Math.min(dcol, drow);
+		return diag * this._diagCost + this._straightCost * (dcol + drow - 2 * diag)
 	}
 }

@@ -17,12 +17,15 @@ r.prototype = e.prototype, t.prototype = new r();
 };
 var AGridView = (function (_super) {
     __extends(AGridView, _super);
-    function AGridView(gridData) {
+    function AGridView(stage, gridData) {
         var _this = _super.call(this) || this;
         _this._cellSize = 20;
         _this._gridData = gridData;
         _this.drawGrid();
         _this.findPath();
+        _this.width = 1136;
+        _this.height = 640;
+        stage.addEventListener(egret.TouchEvent.TOUCH_TAP, _this.onGridClick, _this);
         return _this;
     }
     AGridView.prototype.drawGrid = function () {
@@ -50,6 +53,14 @@ var AGridView = (function (_super) {
                 this.graphics.endFill();
             }
         }
+    };
+    AGridView.prototype.onGridClick = function (e) {
+        console.log("onGridClick: ", e);
+        var xpos = Math.floor(e.localX / this._cellSize);
+        var ypos = Math.floor(e.localY / this._cellSize);
+        this._gridData.setWalkable(xpos, ypos, !this._gridData.getNode(xpos, ypos).walkable);
+        this.drawGrid();
+        this.findPath();
     };
     AGridView.prototype.findPath = function () {
         var astar = new AStar();
@@ -99,6 +110,6 @@ var AGridView = (function (_super) {
         return 0xffffff;
     };
     return AGridView;
-}(egret.Shape));
+}(egret.Sprite));
 __reflect(AGridView.prototype, "AGridView");
 //# sourceMappingURL=AGridView.js.map

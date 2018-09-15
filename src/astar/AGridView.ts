@@ -6,14 +6,17 @@
  * @Last Modified time: 2018-09-15 20:21:52
  */
 
-class AGridView extends egret.Shape {
+class AGridView extends egret.Sprite {
     private _cellSize: number = 20;
     private _gridData: AGridData;
-    constructor(gridData: AGridData){
+    constructor(stage: egret.Stage, gridData: AGridData){
         super();
         this._gridData = gridData;
         this.drawGrid();
         this.findPath();
+        this.width = 1136;
+        this.height = 640;
+        stage.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onGridClick, this);
     }
     public drawGrid(): void {
         // 清除上一次的绘制
@@ -40,6 +43,14 @@ class AGridView extends egret.Shape {
                 this.graphics.endFill();
             }
         }
+    }
+    private onGridClick(e: egret.TouchEvent): void {
+        console.log("onGridClick: ", e)
+        let xpos = Math.floor(e.localX / this._cellSize);
+        let ypos = Math.floor(e.localY / this._cellSize);
+        this._gridData.setWalkable(xpos, ypos, !this._gridData.getNode(xpos, ypos).walkable)
+        this.drawGrid();
+        this.findPath();
     }
     private findPath(): void {
         var astar: AStar = new AStar();

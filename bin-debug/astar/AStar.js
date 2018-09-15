@@ -3,6 +3,8 @@ var __reflect = (this && this.__reflect) || function (p, c, t) {
 };
 var AStar = (function () {
     function AStar() {
+        /**估价函数 */
+        this._heuristic = this.diagonal;
         this._straightCost = 1;
         this._diagCost = Math.SQRT2;
     }
@@ -28,7 +30,7 @@ var AStar = (function () {
         var open = this._open;
         var close = this._close;
         this._startNode.g = 0;
-        this._startNode.h = this.gouGu(this._startNode);
+        this._startNode.h = this._heuristic(this._startNode);
         this._startNode.f = this._startNode.g + this._startNode.h;
         var startCol, endCol, startRow, endRow;
         var testNode, g, h, f;
@@ -50,7 +52,7 @@ var AStar = (function () {
                         cost = diagCost;
                     }
                     g = node.g + cost;
-                    h = this.gouGu(testNode);
+                    h = this._heuristic(testNode);
                     f = g + h;
                     if (this.isOpen(testNode)) {
                         if (testNode.g > g) {
@@ -77,7 +79,6 @@ var AStar = (function () {
             open.sort(function (node1, node2) {
                 return node2.f > node1.f ? 1 : -1;
             });
-            console.log(open);
             node = open.pop();
         }
         // 构建路径
@@ -114,10 +115,23 @@ var AStar = (function () {
     AStar.prototype.getVisited = function () {
         return this._close.concat(this._open);
     };
+    /**估价函数 */
+    /**估价函数--勾股定理 */
     AStar.prototype.gouGu = function (node) {
         var dcol = node.col - this._endNode.col;
         var drow = node.row - this._endNode.row;
         return Math.sqrt(dcol * dcol + drow * drow);
+    };
+    /**估价函数--曼哈顿 */
+    AStar.prototype.manhatan = function (node) {
+        return Math.abs(node.col - this._endNode.col) * this._straightCost + Math.abs(node.row - this._endNode.row) * this._straightCost;
+    };
+    /**估价函数--对角线启发式函数 */
+    AStar.prototype.diagonal = function (node) {
+        var dcol = Math.abs(node.col - this._endNode.col);
+        var drow = Math.abs(node.row - this._endNode.row);
+        var diag = Math.min(dcol, drow);
+        return diag * this._diagCost + this._straightCost * (dcol + drow - 2 * diag);
     };
     return AStar;
 }());

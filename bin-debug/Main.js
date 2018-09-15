@@ -165,7 +165,7 @@ var Main = (function (_super) {
         var gridData = new AGridData(50, 30);
         gridData.setEndNode(0, 2);
         gridData.setStartNode(48, 27);
-        var gridView = new AGridView(gridData);
+        var gridView = new AGridView(this.stage, gridData);
         this.stage.addChild(gridView);
     };
     return Main;
