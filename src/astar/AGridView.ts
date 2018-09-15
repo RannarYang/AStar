@@ -44,6 +44,7 @@ class AGridView extends egret.Shape {
     private findPath(): void {
         var astar: AStar = new AStar();
         if(astar.findPath(this._gridData)) {
+            this.showVisited(astar.getVisited());
             this.showPath(astar.path)
         }
     }
@@ -56,6 +57,20 @@ class AGridView extends egret.Shape {
             this.graphics.lineStyle(0);
             this.graphics.beginFill(0);
             this.graphics.drawCircle(node.col * cellSize + cellSizeHalf, node.row * cellSize + cellSizeHalf, cellSize / 3 );
+            this.graphics.endFill();
+        }
+    }
+    private showVisited(path: ANode[]): void {
+        let node: ANode;
+        let cellSize = this._cellSize;
+        let cellSizeHalf = cellSize * 0.5;
+        for(let i = 0; i < path.length; i++) {
+            node = path[i];
+            this.graphics.beginFill(0xcccccc);
+            this.graphics.moveTo(node.col * cellSize, node.row * cellSize);
+            this.graphics.lineTo(node.col * cellSize + cellSize, node.row * cellSize);
+            this.graphics.lineTo(node.col * cellSize + cellSize, node.row * cellSize + cellSize);
+            this.graphics.drawRect(node.col * cellSize, node.row * cellSize, cellSize, cellSize);
             this.graphics.endFill();
         }
     }

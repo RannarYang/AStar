@@ -111,6 +111,9 @@ var AStar = (function () {
         }
         return false;
     };
+    AStar.prototype.getVisited = function () {
+        return this._close.concat(this._open);
+    };
     AStar.prototype.gouGu = function (node) {
         var dcol = node.col - this._endNode.col;
         var drow = node.row - this._endNode.row;

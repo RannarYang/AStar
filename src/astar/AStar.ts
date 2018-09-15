@@ -119,6 +119,11 @@ class AStar {
 		}
 		return false;
 	}
+
+	public getVisited(): ANode[] {
+		return this._close.concat(this._open);
+	}
+
 	private gouGu(node: ANode): number {
 		let dcol: number = node.col - this._endNode.col;
 		let drow: number = node.row - this._endNode.row;
