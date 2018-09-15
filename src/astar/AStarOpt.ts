@@ -3,10 +3,10 @@
  * @Author: RannarYang 
  * @Date: 2018-09-16 00:12:33 
  * @Last Modified by: RannarYang
- * @Last Modified time: 2018-09-16 00:36:34
+ * @Last Modified time: 2018-09-16 01:10:09
  */
 class AStarOpt {
-	private _open: ANode[];
+	private _open: BinaryHeaps;
 	private _close: ANode[];
 	private _gridData: AGridData;
 	private _startNode: ANode;
@@ -24,7 +24,7 @@ class AStarOpt {
 	}
 	public findPath(gridData: AGridData): boolean {
 		this._gridData = gridData;
-		this._open = [];
+		this._open = new BinaryHeaps();
 		this._close = [];
 		this._startNode = gridData.startNode;
 		this._endNode = gridData.endNode;
@@ -73,6 +73,7 @@ class AStarOpt {
 							testNode.g = g;
 							testNode.h = h;
 							testNode.parent = node;
+							this._open.valueChanged(testNode);
 						}
 					} else {
 						testNode.f = f;
@@ -86,14 +87,11 @@ class AStarOpt {
 			}
 			close.push(node);
 			node.status = NodeStatus.CLOSE;
-			if(open.length == 0) {
+			if(open.getLength() == 0) {
 				console.warn("i can not find path");
 				return false;
 			}
-			open.sort((node1: ANode, node2: ANode)=>{
-				return node2.f > node1.f ? 1 : -1;
-			});
-			node = open.pop();
+			node = this._open.pop();
 			node.status = NodeStatus.NORMAL;
 		}
 		// 构建路径
@@ -117,7 +115,8 @@ class AStarOpt {
 	}
 
 	public getVisited(): ANode[] {
-		return this._close.concat(this._open);
+		// return this._close.concat(this._open.getVector());
+		return [];
 	}
 
 

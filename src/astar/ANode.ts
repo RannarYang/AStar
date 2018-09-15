@@ -2,7 +2,7 @@
  * @Author: RannarYang 
  * @Date: 2018-09-15 19:38:42 
  * @Last Modified by: RannarYang
- * @Last Modified time: 2018-09-16 00:33:05
+ * @Last Modified time: 2018-09-16 01:06:52
  */
 
 class ANode{
@@ -32,6 +32,15 @@ class ANode{
         this.status = NodeStatus.NORMAL;
     }
 
+    public static compare(a: ANode, b: ANode): number {
+        if(a.f < b.f) {
+            return 1;
+        }
+        if(a.f > b.f) {
+            return -1;
+        }
+        return 0;
+    }
     
 }
 

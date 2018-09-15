@@ -8,15 +8,17 @@
 		"libs/modules/promise/promise.js"
 	],
 	"game": [
+		"bin-debug/astar/AGridView.js",
 		"bin-debug/AssetAdapter.js",
-		"bin-debug/LoadingUI.js",
 		"bin-debug/Main.js",
 		"bin-debug/Platform.js",
 		"bin-debug/ThemeAdapter.js",
 		"bin-debug/astar/AGridData.js",
-		"bin-debug/astar/AGridView.js",
+		"bin-debug/LoadingUI.js",
 		"bin-debug/astar/ANode.js",
 		"bin-debug/astar/AStar.js",
-		"bin-debug/astar/AStarOpt.js"
+		"bin-debug/astar/AStarOpt.js",
+		"bin-debug/astar/BinaryHeaps.js",
+		"bin-debug/astar/IList.js"
 	]
 }
